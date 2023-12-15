@@ -1,0 +1,78 @@
+{% set default_cable = '5m' %}
+{% set ingress_lossless_pool_size =  '23850816' %}
+{% set ingress_lossy_pool_size =  '36222208' %}
+{% set egress_lossless_pool_size =  '29482816' %}
+{% set egress_lossy_pool_size =  '26400000' %}
+
+{%- macro generate_port_lists(PORT_ALL) %}
+    {# Generate list of ports #}
+    {%- for port_idx in range(0,32) %}
+        {%- if PORT_ALL.append("Ethernet%d" % (port_idx * 4)) %}{%- endif %}
+    {%- endfor %}
+{%- endmacro %}
+
+{%- macro generate_buffer_pool_and_profiles() %}
+    "BUFFER_POOL": {
+        "ingress_lossless_pool": {
+            "mode": "dynamic",
+            "size": "7340032",
+            "type": "ingress"
+        },
+        "egress_lossless_pool": {
+            "mode": "dynamic",
+            "size": "16777152",
+            "type": "egress"
+        },
+        "egress_lossy_pool": {
+            "mode": "dynamic",
+            "size": "7340032",
+            "type": "egress"
+        }
+    },
+    "BUFFER_PROFILE": {
+        "ingress_lossless_profile": {
+            "dynamic_th": "7",
+            "pool": "[BUFFER_POOL|ingress_lossless_pool]",
+            "size": "4096",
+            "xoff": "100000",
+            "xon": "18430"
+        },
+        "egress_lossless_profile": {
+            "dynamic_th": "7",
+            "pool": "[BUFFER_POOL|egress_lossless_pool]",
+            "size": "0"
+        },
+        "egress_lossy_profile": {
+            "dynamic_th": "3",
+            "pool": "[BUFFER_POOL|egress_lossy_pool]",
+            "size": "4096",
+            "xoff": "184320",
+            "xon": "184320"
+        },
+        "egress_multicast_profile": {
+            "dynamic_th": "3",
+            "pool": "[BUFFER_POOL|egress_multicast_pool]",
+            "size": "4096",
+            "xoff": "184320",
+            "xon": "184320"
+        }
+    },
+{%- endmacro %}
+    "BUFFER_PG": {
+        "Ethernet0,Ethernet4,Ethernet8,Ethernet12,Ethernet16,Ethernet20,Ethernet24,Ethernet28,Ethernet32,Ethernet36,Ethernet40,Ethernet44,Ethernet48,Ethernet52,Ethernet56,Ethernet60,Ethernet64,Ethernet68,Ethernet72,Ethernet76,Ethernet80,Ethernet84,Ethernet88,Ethernet92,Ethernet96,Ethernet100,Ethernet104,Ethernet108,Ethernet112,Ethernet116,Ethernet120,Ethernet124|2": {
+            "profile": "[BUFFER_PROFILE|ingress_lossless_profile]"
+        }
+    },
+{%- macro generate_queue_buffers(port_names) %}
+    "BUFFER_QUEUE": {
+        "Ethernet0,Ethernet4,Ethernet8,Ethernet12,Ethernet16,Ethernet20,Ethernet24,Ethernet28,Ethernet32,Ethernet36,Ethernet40,Ethernet44,Ethernet48,Ethernet52,Ethernet56,Ethernet60,Ethernet64,Ethernet68,Ethernet72,Ethernet76,Ethernet80,Ethernet84,Ethernet88,Ethernet92,Ethernet96,Ethernet100,Ethernet104,Ethernet108,Ethernet112,Ethernet116,Ethernet120,Ethernet124|1-3": {
+            "profile": "[BUFFER_PROFILE|egress_lossy_profile]"
+        },
+        "Ethernet0,Ethernet4,Ethernet8,Ethernet12,Ethernet16,Ethernet20,Ethernet24,Ethernet28,Ethernet32,Ethernet36,Ethernet40,Ethernet44,Ethernet48,Ethernet52,Ethernet56,Ethernet60,Ethernet64,Ethernet68,Ethernet72,Ethernet76,Ethernet80,Ethernet84,Ethernet88,Ethernet92,Ethernet96,Ethernet100,Ethernet104,Ethernet108,Ethernet112,Ethernet116,Ethernet120,Ethernet124|0": {
+            "profile": "[BUFFER_PROFILE|egress_lossless_profile]"
+        },
+        "Ethernet0,Ethernet4,Ethernet8,Ethernet12,Ethernet16,Ethernet20,Ethernet24,Ethernet28,Ethernet32,Ethernet36,Ethernet40,Ethernet44,Ethernet48,Ethernet52,Ethernet56,Ethernet60,Ethernet64,Ethernet68,Ethernet72,Ethernet76,Ethernet80,Ethernet84,Ethernet88,Ethernet92,Ethernet96,Ethernet100,Ethernet104,Ethernet108,Ethernet112,Ethernet116,Ethernet120,Ethernet124|4-7": {
+            "profile": "[BUFFER_PROFILE|egress_lossy_profile]"
+        }
+    }
+{%- endmacro %}

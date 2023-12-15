@@ -1,0 +1,70 @@
+#!/usr/bin/make -f
+
+export INSTALL_MOD_DIR:=extra
+
+PACKAGE_PRE_NAME := sonic-platform-semptian
+KVERSION   ?= $(shell uname -r)
+KERNEL_SRC :=  /lib/modules/$(KVERSION)
+KERNELDIR ?= /lib/modules//$(KVERSION)/build
+KERNEL_DIR ?= /lib/modules//$(KVERSION)/build
+MOD_SRC_DIR:= $(shell pwd)
+MODULE_DIRS:= ps7350-32x
+MODULE_DIR := modules
+UTILS_DIR := utils
+SERVICE_DIR := service
+FIRMWARE_DIR := firmware
+CONF_DIR := conf
+APP_DIR := $(MODULE_DIR)/app_src
+OUTPUT_DIR := output
+WHEEL_BUILD_DIR := $(OUTPUT_DIR)/wheel
+PYTHON		 ?= python3
+COMMON_DIR :=  common
+COMMON_DIRS := Adlink Advan Semp_drv
+SCRIPT_DIR :=  $(COMMON_DIR)/Script
+
+export KERNELDIR KERNEL_DIR
+
+%:
+	dh $@ --with systemd
+
+override_dh_auto_build:
+
+
+
+override_dh_auto_install:
+	(for mod in $(MODULE_DIRS); do \
+		dh_installdirs -p$(PACKAGE_PRE_NAME)-$${mod} \
+			$(KERNEL_SRC)/$(INSTALL_MOD_DIR); \
+		cp $(MOD_SRC_DIR)/$${mod}/$(MODULE_DIR)/*.ko \
+			debian/$(PACKAGE_PRE_NAME)-$${mod}/$(KERNEL_SRC)/$(INSTALL_MOD_DIR); \
+		(for com in $(COMMON_DIRS); do \
+			if [ $$com = "Semp_drv" ]; then \
+				cp $(MOD_SRC_DIR)/$(COMMON_DIR)/$${com}/*.ko \
+					debian/$(PACKAGE_PRE_NAME)-$${mod}/$(KERNEL_SRC)/$(INSTALL_MOD_DIR); \
+			else  \
+				cp $(MOD_SRC_DIR)/$(COMMON_DIR)/$${com}/driver/*.ko \
+					debian/$(PACKAGE_PRE_NAME)-$${mod}/$(KERNEL_SRC)/$(INSTALL_MOD_DIR); \
+			fi;\
+		done); \
+		dh_installdirs -p$(PACKAGE_PRE_NAME)-$${mod} usr/sbin usr/lib; \
+		cp $(MOD_SRC_DIR)/$${mod}/$(APP_DIR)/$(OUTPUT_DIR)/lib/*  \
+				debian/$(PACKAGE_PRE_NAME)-$${mod}/usr/lib ; \
+		cp $(MOD_SRC_DIR)/$${mod}/$(APP_DIR)/$(OUTPUT_DIR)/bin/* $(MOD_SRC_DIR)/$${mod}/$(UTILS_DIR) ; \
+		cp $(MOD_SRC_DIR)/$${mod}/$(UTILS_DIR)/* \
+			debian/$(PACKAGE_PRE_NAME)-$${mod}/usr/sbin; \
+		cp $(MOD_SRC_DIR)/$(SCRIPT_DIR)/* \
+			debian/$(PACKAGE_PRE_NAME)-$${mod}/usr/sbin; \
+		dh_installdirs -p$(PACKAGE_PRE_NAME)-$${mod} lib/systemd/system; \
+		cp $(MOD_SRC_DIR)/$${mod}/$(SERVICE_DIR)/*.service \
+			debian/$(PACKAGE_PRE_NAME)-$${mod}/lib/systemd/system; \
+		\
+			_name=`echo $$mod | sed s/-/_/g`;\
+			dh_installdirs -p$(PACKAGE_PRE_NAME)-$${mod} usr/share/sonic/device/x86_64-semptian_$${_name}-r0/; \
+			cp -r $(MOD_SRC_DIR)/$${mod}/$(APP_DIR)/$(WHEEL_BUILD_DIR)/*  debian/$(PACKAGE_PRE_NAME)-$${mod}/usr/share/sonic/device/x86_64-semptian_$${_name}-r0/; \
+	done)
+ 
+override_dh_usrlocal:
+
+override_dh_clean:
+	
+

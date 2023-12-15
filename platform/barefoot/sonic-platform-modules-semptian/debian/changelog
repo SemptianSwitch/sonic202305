@@ -1,0 +1,15 @@
+platform-driver (1.0.0) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- semptian <semptian@semptian.com>  Thu Jul 15 03:45:11 UTC 2021
+
+platform-driver (1.0.1) 
+
+  * support ps7350 device
+ -- semptian <semptian@semptian.com>  Mon Aug  2 16:55:14 CST 2021
+ 
+ platform-driver (1.0.1) 
+
+  * support ps8550 device
+ -- semptian <semptian@semptian.com>  Mon Jan 3 16:55:14 CST 2022

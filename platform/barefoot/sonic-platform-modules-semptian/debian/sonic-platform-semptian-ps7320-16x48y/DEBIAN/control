@@ -1,0 +1,9 @@
+Package: sonic-platform-semptian-ps7320-16x48y
+Source: platform-driver
+Version: 1.0.0
+Architecture: amd64
+Maintainer: Semptian <semptian@semptian.com>
+Installed-Size: 7
+Section: unknown
+Priority: optional
+Description: This package contains PS7320-16X48Y platform driver utility for SONiC project.

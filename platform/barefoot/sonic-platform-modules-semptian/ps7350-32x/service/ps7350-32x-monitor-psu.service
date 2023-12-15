@@ -1,0 +1,14 @@
+[Unit]
+Description=SEMPTIAN_PS7350_32X Platform Monitoring PSU service
+Before=pmon.service
+After=ps7350-32x-monitor-psu.service
+DefaultDependencies=no
+
+[Service]
+ExecStart=/usr/local/bin/semptian_monitor_psu.py
+
+# Resource Limitations
+LimitCORE=infinity
+
+[Install]
+WantedBy=multi-user.target

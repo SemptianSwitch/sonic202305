@@ -1,0 +1,24 @@
+# Automatically added by dh_installmodules/13.3.4
+if [ -e /boot/System.map-5.10.0-18-2-amd64 ]; then
+	depmod -a -F /boot/System.map-5.10.0-18-2-amd64 5.10.0-18-2-amd64 || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_start/13.3.4
+if [ -d /run/systemd/system ] && [ "$1" = remove ]; then
+	systemctl --system daemon-reload >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable/13.3.4
+if [ "$1" = "remove" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper mask 'ps7350-32x-driver.service' >/dev/null || true
+	fi
+fi
+
+if [ "$1" = "purge" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper purge 'ps7350-32x-driver.service' >/dev/null || true
+		deb-systemd-helper unmask 'ps7350-32x-driver.service' >/dev/null || true
+	fi
+fi
+# End automatically added section

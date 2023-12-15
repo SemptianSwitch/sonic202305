@@ -1,0 +1,26 @@
+Source: platform-driver
+Section: unknown
+Priority: optional
+Maintainer: Semptian <semptian@semptian.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 1.0.1
+
+Package: sonic-platform-semptian-ps7350-32x
+Architecture: amd64 
+Description: This package contains PS7350-32X platform driver utility for SONiC project.
+
+Package: sonic-platform-semptian-ps8550-128x
+Architecture: amd64 
+Description: This package contains PS8550-128X platform driver utility for SONiC project.
+
+Package: sonic-platform-semptian-ps8560-32q
+Architecture: amd64 
+Description: This package contains PS8560-32Q platform driver utility for SONiC project.
+
+Package: sonic-platform-semptian-ps9560-32dq
+Architecture: amd64 
+Description: This package contains PS9560-32DQ platform driver utility for SONiC project.
+
+Package: sonic-platform-semptian-ps7320-16x48y
+Architecture: amd64 
+Description: This package contains PS7320-16X48Y platform driver utility for SONiC project.
