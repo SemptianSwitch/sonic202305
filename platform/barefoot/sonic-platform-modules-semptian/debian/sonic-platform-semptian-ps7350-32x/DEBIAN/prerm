@@ -1,7 +1,0 @@
-#!/bin/sh
-set -e
-# Automatically added by dh_systemd_start/13.3.4
-if [ -d /run/systemd/system ]; then
-	deb-systemd-invoke stop 'ps7350-32x-driver.service' 'ps7350-32x-monitor-led.service' 'ps7350-32x-monitor-psu.service' 'ps7350-32x-monitor-usbnet.service' 'ps7350-32x-monitor-watchdog.service' >/dev/null || true
-fi
-# End automatically added section

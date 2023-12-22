@@ -1,3 +1,0 @@
-shlibs:Depends=libc6 (>= 2.29), libreadline8 (>= 6.0)
-misc:Depends=
-misc:Pre-Depends=

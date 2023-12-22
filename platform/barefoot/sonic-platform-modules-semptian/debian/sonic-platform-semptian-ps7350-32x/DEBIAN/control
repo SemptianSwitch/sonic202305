@@ -1,9 +1,0 @@
-Package: sonic-platform-semptian-ps7350-32x
-Source: platform-driver
-Version: 1.0.0
-Architecture: amd64
-Maintainer: Semptian <semptian@semptian.com>
-Installed-Size: 8499
-Section: unknown
-Priority: optional
-Description: This package contains PS7350-32X platform driver utility for SONiC project.

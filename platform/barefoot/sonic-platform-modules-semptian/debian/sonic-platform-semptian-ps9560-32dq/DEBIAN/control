@@ -1,9 +1,0 @@
-Package: sonic-platform-semptian-ps9560-32dq
-Source: platform-driver
-Version: 1.0.0
-Architecture: amd64
-Maintainer: Semptian <semptian@semptian.com>
-Installed-Size: 7
-Section: unknown
-Priority: optional
-Description: This package contains PS9560-32DQ platform driver utility for SONiC project.
